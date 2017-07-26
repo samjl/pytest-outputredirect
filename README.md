@@ -26,22 +26,23 @@ From console run pytest using the -s (--capture=no).
 
 Example test code:
 
-    from py.test import log
-    
-    
-    def test_logging():
-        print "Hello world"    
-        log.high_level_step("Woo Hoo!")
-        log.detail_step("It works 1!")
-        log.detail_step("It works 2!")
-        log.step("It still works 3!")
-        log.step("This line contains a line break here\nand then continues!")
-        print "Has this been incremented?"
-        print "Is this the same level as last msg?"
-        print "This is a regular print statement with a line break here\nwith this text on the next line"
-        log.step("It still works 4!")
-        log.detail_step("It works 5!")
-        print "Goodbye"
+```python
+from py.test import log
+
+def test_logging():
+    print "Hello world"
+    log.high_level_step("Woo Hoo!")
+    log.detail_step("It works 1!")
+    log.detail_step("It works 2!")
+    log.step("It still works 3!")
+    log.step("This line contains a line break here\nand then continues!")
+    print "Has this been incremented?"
+    print "Is this the same level as last msg?"
+    print "This is a regular print statement with a line break here\nwith this text on the next line"
+    log.step("It still works 4!")
+    log.detail_step("It works 5!")
+    print "Goodbye"
+```
 
 In the output below the format is:
 
