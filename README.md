@@ -14,7 +14,8 @@ Download and build the [pytest-loglevels](https://github.com/samjl/pytest-loglev
     python setup.py bdist_wheel
 (wheel python plugin is required for build step)
 
-Copy dist/pytest_loglevels-... .whl to a local python plugin server
+Copy dist/pytest_loglevels-... .whl and dist/pytest_outputredirect-... .whl 
+to a local python plugin server and install using pip:
 
     pip install pytest-outputredirect
     
@@ -70,4 +71,3 @@ log_level-step_for_level [message_index] message
     3-1 [20] Goodbye
     3-2 [21] .
     1-3 [22] ====================================================================================================== 1 passed in 0.00 seconds ======================================================================================================
-    
