@@ -39,6 +39,7 @@ def pytest_addoption(parser):
                      help="Don't save log to JSON file (std out only)")
 
 
+@pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
     # Load user defined configuration from file
     config_path = pkg_resources.resource_filename('pytest_outputredirect', '')
