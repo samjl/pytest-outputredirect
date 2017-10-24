@@ -53,44 +53,46 @@ def pytest_configure(config):
         except Exception as e:
             print e
 
-    if config.getoption("--no-json"):
-        LogOutputRedirection.json_log = False
-        _debug_print("JSON logging is disabled (command line)",
-                     DEBUG["output-redirect"])
-    else:
-        LogOutputRedirection.json_log = not(parser.getboolean("general",
-                                                              "no-json"))
-        _debug_print("JSON logging is {}abled (config.cfg)"
-                     .format("en" if LogOutputRedirection.json_log else "dis"),
-                     DEBUG["output-redirect"])
-
     if not (config.getoption("--no-redirect") or
-            isinstance(sys.stdout, LogOutputRedirection)):
+            parser.getboolean("general", "no-redirect")):
         log_redirect = LogOutputRedirection()
         sys.stderr = log_redirect
         sys.stdout = log_redirect
 
-    if LogOutputRedirection.json_log:
-        root_dir = config.getoption("--root-dir")
-        if not root_dir:
-            root_dir = parser.get("general", "root-dir")
-            _debug_print("Using root directory {} (config.cfg)"
-                         .format(root_dir), DEBUG["output-redirect"])
-        else:
-            _debug_print("Using root directory '{}' (command line)"
-                         .format(root_dir), DEBUG["output-redirect"])
-        LogOutputRedirection.root_directory = root_dir
-        # Create root logs directory if required
-        if not os.path.exists(LogOutputRedirection.root_directory):
-            _debug_print("Creating directories {}".format(LogOutputRedirection.
-                                                          root_directory),
+        if config.getoption("--no-json"):
+            LogOutputRedirection.json_log = False
+            # This debug won't won't be logged to file - not created yet
+            _debug_print("JSON logging is disabled (command line)",
                          DEBUG["output-redirect"])
-            os.makedirs(LogOutputRedirection.root_directory)
+        else:
+            LogOutputRedirection.json_log = not(parser.getboolean("general",
+                                                                  "no-json"))
+            # This debug won't won't be logged to file - not created yet
+            _debug_print("JSON logging is {}abled (config.cfg)".format("en"
+                         if LogOutputRedirection.json_log else "dis"),
+                         DEBUG["output-redirect"])
 
-        open(os.path.join(LogOutputRedirection.root_directory, "session.json"),
-             'w').close()
-        LogOutputRedirection.session_file_path = os.path.join(
-            LogOutputRedirection.root_directory, "session.json")
+        if LogOutputRedirection.json_log:
+            root_dir = config.getoption("--root-dir")
+            if not root_dir:
+                root_dir = parser.get("general", "root-dir")
+                _debug_print("Using root directory {} (config.cfg)"
+                             .format(root_dir), DEBUG["output-redirect"])
+            else:
+                _debug_print("Using root directory '{}' (command line)"
+                             .format(root_dir), DEBUG["output-redirect"])
+            LogOutputRedirection.root_directory = root_dir
+            # Create root logs directory if required
+            if not os.path.exists(LogOutputRedirection.root_directory):
+                _debug_print("Creating directories {}"
+                             .format(LogOutputRedirection.root_directory),
+                             DEBUG["output-redirect"])
+                os.makedirs(LogOutputRedirection.root_directory)
+
+            open(os.path.join(LogOutputRedirection.root_directory,
+                              "session.json"), 'w').close()
+            LogOutputRedirection.session_file_path = os.path.join(
+                LogOutputRedirection.root_directory, "session.json")
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
